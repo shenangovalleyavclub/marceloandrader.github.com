@@ -1,0 +1,6 @@
+url: "http://marceloandrader.github.com"
+exclude: [Gemfile, Gemfile.lock]
+permalink: pretty
+markdown: rdiscount
+pygments: true
+paginate: 10
