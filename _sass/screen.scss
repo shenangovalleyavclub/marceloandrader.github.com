@@ -32,10 +32,11 @@ form {
   // You'll probably want to remove the scaffolding once you start styling your site.
   @include blueprint-scaffolding; }
 
-// Page layout can be done using mixins applied to your semantic classes and IDs:
+// Page layout can be d
 body {
   #container {
-    @include container; 
+    @include container;
+		font-size: 14px;
 	}
   #header, #footer {
     @include column($blueprint-grid-columns); 
@@ -54,6 +55,7 @@ body {
 	}
 	
 	h1 {
+		font-family: 'Paytone One', sans-serif;
 		@include single-text-shadow($text-shadow-color, 2px, 2px, 2px);
 		a {
 			text-decoration: none;
