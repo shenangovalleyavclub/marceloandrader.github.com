@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: Beginning of the blog
 ---
 ## Beginning

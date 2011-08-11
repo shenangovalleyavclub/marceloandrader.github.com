@@ -1,6 +1,13 @@
 url: "http://marceloandrader.github.com"
 exclude: [Gemfile, Gemfile.lock]
-permalink: pretty
 markdown: rdiscount
 pygments: true
 paginate: 10
+permalink: pretty
+exclude: - config.rb
+         - build
+         - Gemfile
+         - Gemfile.lock
+         - Rakefile
+         - README.md
+         - test
