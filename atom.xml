@@ -21,12 +21,15 @@ layout: nil
    <updated>{{ post.date | date_to_xmlschema }}</updated>
    <id>http://marceloandrader.github.com{{ post.id }}</id>
    <content type="html">
+	<![CDATA[
 		{% if post.teaser %}
  			<p>{{ post.teaser  }}</p>
  			<p><a href="{{post.url}}">Read whole post.</a></p>
 		{% else %}
 			{{ post.content  }}
-		{% endif %}</content>
+		{% endif %}
+	]]>
+	</content>
  </entry>
  {% endfor %}
  
