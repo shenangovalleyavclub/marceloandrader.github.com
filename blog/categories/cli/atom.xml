@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cli | Marcelo Andrade]]></title>
+  <link href="http://marceloandrader.github.com/blog/categories/cli/atom.xml" rel="self"/>
+  <link href="http://marceloandrader.github.com/"/>
+  <updated>2011-12-15T17:41:03-05:00</updated>
+  <id>http://marceloandrader.github.com/</id>
+  <author>
+    <name><![CDATA[Marcelo Andrade]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Aplicaciones CLI]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/"/>
+    <updated>2011-12-15T17:16:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli</id>
+    <content type="html"><![CDATA[<p>Estas son mis aplicaciones preferidas, para obtener los comandos que m&aacute;s uso en la l&iacute;nea de comandos</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>comandos m&aacute;s usados  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">history</span> | awk <span class="s1">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &quot; &quot; CMD[a]/count*100 &quot;% &quot; a;}&#39;</span> | grep -v <span class="s2">&quot;./&quot;</span> | column -c3 -s <span class="s2">&quot; &quot;</span> -t | sort -nr | nl |  head -n20
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<!-- more -->
+
+
+<p>Resultado:</p>
+
+<pre>
+     1  3194  33.7347%    git     # para trabajar con c&oacute;digo fuente
+     2  1535  16.2125%    cd
+     3  854   9.01986%    ls
+     4  486   5.13308%    ssh     # conexi&oacute;n a servidores
+     5  195   2.05957%    cat
+     6  193   2.03845%    sudo
+     7  172   1.81665%    mate
+     8  155   1.63709%    curl    # probar peticiones HTTP
+     9  152   1.60541%    tail    # ver logs
+    10  151   1.59485%    vim
+    11  150   1.58428%    rake
+    12  120   1.26743%    cap     # desplegar aplicaciones (capistrano)
+    13  97    1.0245%     ping
+    14  85    0.897761%   phpunit
+    15  80    0.844951%   find
+    16  79    0.83439%    rm
+    17  79    0.83439%    mysql
+    18  73    0.771018%   php
+    19  68    0.718209%   irb
+    20  61    0.644275%   mvim
+</pre>
+
+
+<p>Pueden comentar el uso de su l&iacute;nea de comandos.</p>
+]]></content>
+  </entry>
+  
+</feed>
