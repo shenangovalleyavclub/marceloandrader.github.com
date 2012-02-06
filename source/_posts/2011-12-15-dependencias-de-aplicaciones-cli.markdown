@@ -3,7 +3,7 @@ layout: post
 title: "Dependencias de Aplicaciones CLI"
 date: 2011-12-15 17:16
 comments: true
-categories: software, cli
+categories: [software, cli]
 ---
 
 Estas son mis aplicaciones preferidas, para obtener los comandos que m&aacute;s uso en la l&iacute;nea de comandos

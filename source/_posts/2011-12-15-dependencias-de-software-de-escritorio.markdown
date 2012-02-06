@@ -3,7 +3,7 @@ layout: post
 title: "Dependencias de Software de Escritorio"
 date: 2011-12-15 16:34
 comments: true
-categories: software, desktop
+categories: [software, desktop]
 ---
 
 {% img /images/posts/dock-marcelo-andrade.png Mi actual Dock %}

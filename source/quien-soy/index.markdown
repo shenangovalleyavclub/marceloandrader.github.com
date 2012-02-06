@@ -13,4 +13,4 @@ Esa pregunta se la responde f&aacute;cilmente siguiendo los siguientes links:
 - [Github](https://github.com/marceloandrader)
 - [Twitter](https://twitter.com/MarceloAndrade)
 - [Facebook](https://www.facebook.com/marcelo.andrade)
-- [Google+](https://plus.google.com/103010069734862462788/posts)
+- [Google+](https://plus.google.com/103010069734862462788)
