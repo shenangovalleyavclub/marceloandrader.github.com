@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dependencias de Aplicaciones CLI - Marcelo Andrade</title>
+  <meta name="author" content="Marcelo Andrade">
+
+  
+  <meta name="description" content="Estas son mis aplicaciones preferidas, para obtener los comandos que m&aacute;s uso en la l&iacute;nea de comandos comandos m&aacute;s usados 1 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcelo Andrade" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-6353164-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Marcelo Andrade</a></h1>
+  
+    <h2>Blog de un desarrollador de software</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marceloandrader.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/quien-soy">Qui&eacute;n soy?</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dependencias De Aplicaciones CLI</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-15T17:16:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Estas son mis aplicaciones preferidas, para obtener los comandos que m&aacute;s uso en la l&iacute;nea de comandos</p>
+
+<figure class='code'><figcaption><span>comandos m&aacute;s usados  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">history</span> | awk <span class="s1">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &quot; &quot; CMD[a]/count*100 &quot;% &quot; a;}&#39;</span> | grep -v <span class="s2">&quot;./&quot;</span> | column -c3 -s <span class="s2">&quot; &quot;</span> -t | sort -nr | nl |  head -n20
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>Resultado:</p>
+
+<pre>
+     1  3194  33.7347%    git     # para trabajar con c&oacute;digo fuente
+     2  1535  16.2125%    cd
+     3  854   9.01986%    ls
+     4  486   5.13308%    ssh     # conexi&oacute;n a servidores
+     5  195   2.05957%    cat
+     6  193   2.03845%    sudo
+     7  172   1.81665%    mate
+     8  155   1.63709%    curl    # probar peticiones HTTP
+     9  152   1.60541%    tail    # ver logs
+    10  151   1.59485%    vim
+    11  150   1.58428%    rake
+    12  120   1.26743%    cap     # desplegar aplicaciones (capistrano)
+    13  97    1.0245%     ping
+    14  85    0.897761%   phpunit
+    15  80    0.844951%   find
+    16  79    0.83439%    rm
+    17  79    0.83439%    mysql
+    18  73    0.771018%   php
+    19  68    0.718209%   irb
+    20  61    0.644275%   mvim
+</pre>
+
+
+<p>Pueden comentar el uso de su l&iacute;nea de comandos.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marcelo Andrade</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-15T17:16:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cli/'>cli</a>, <a class='category' href='/blog/categories/software-/'>software,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/" data-via="MarceloAndrade" data-counturl="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/12/15/dependencias-de-software-de-escritorio/" title="Previous Post: Dependencias de Software de Escritorio">&laquo; Dependencias de Software de Escritorio</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/15/dependencias-de-aplicaciones-cli/">Dependencias de Aplicaciones CLI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/15/dependencias-de-software-de-escritorio/">Dependencias de Software de Escritorio</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/marceloandrader">@marceloandrader</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'marceloandrader',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("MarceloAndrade", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/MarceloAndrade" class="twitter-follow-button" data-show-count="false">Follow @MarceloAndrade</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - Marcelo Andrade -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog-marcelo-andrade';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/';
+        var disqus_url = 'http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
