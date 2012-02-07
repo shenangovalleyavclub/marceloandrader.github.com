@@ -49,10 +49,9 @@ Estuve probando este sistema en los &uacute;ltimos proyectos y me ha encantado,
 aparte de vagrant que ayuda en la gesti&oacute;n de las m&aacute;quinas virtuales,
 el que m&aacute;s se luce es chef, la idea es que puedes tener toda una 'receta'
 para instalar todo el software necesario para que se ejecute tu aplicaci&oacute;n
-sobre el sistema operativo que ejecutas en producci&oacute;, si lo usas
+sobre el sistema operativo que ejecutas en producci&oacute;n, si lo usas
 desde el primer momento del proyecto crear tu sistema de producci&oacute;n
-es tan f&aacute;cil como ejecutar un comando, y si necesitas tener n servidores,
-pues solo ejecutar n comandos para ejecutar la receta de chef..
+es tan f&aacute;cil como ejecutar un comando.
 
 En un post siguiente les contar&eacute; un poco m&aacute;s como se configura vagrant
-y como se crea una receta basica con chef.
+y como se crea una receta b&aacute;sica con chef.
