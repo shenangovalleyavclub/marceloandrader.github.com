@@ -16,6 +16,8 @@ vagrant soporta las versiones 4.0.x y 4.1.x
 Descargar el paquete adecuado para su sistema operativo [Descargar Vagrant](http://downloads.vagrantup.com/tags/v1.0.3)
 e instalarlo.
 
+<!-- more -->
+
 ##Probando la instalaci&oacute;n
 Abrir una terminal y ejecutar :
 
