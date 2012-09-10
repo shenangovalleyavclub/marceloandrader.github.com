@@ -180,7 +180,7 @@ Para lo cual editamos ``Vagrantfile``
   config.vm.forward_port 80, 4567
 {% endcodeblock %}
 
-Para hacer que se tome en cuenta este nuevo puerto se debe recargar la m&aacutelquina
+Para hacer que se tome en cuenta este nuevo puerto se debe recargar la m&aacute;quina
 
 {% codeblock vagrant reload lang:bash %}
 $ vagrant reload
