@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: desarrollo | Marcelo Andrade]]></title>
+  <link href="http://marceloandrader.github.com/blog/categories/desarrollo/atom.xml" rel="self"/>
+  <link href="http://marceloandrader.github.com/"/>
+  <updated>2013-02-19T13:51:40-05:00</updated>
+  <id>http://marceloandrader.github.com/</id>
+  <author>
+    <name><![CDATA[Marcelo Andrade]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Caso pr&aacute;ctico de uso de vagrant]]></title>
+    <link href="http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/"/>
+    <updated>2012-05-28T17:01:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant</id>
+    <content type="html"><![CDATA[<p>Para este ejemplo levantaremos un sistema linux (ubuntu)
+con apache como ejemplo del uso de vagrant.</p>
+
+<h2>Pre-Requisitos</h2>
+
+<p>Instalar VirtualBox <a href="http://www.virtualbox.org/wiki/Downloads">Descargar VirtualBox</a>
+vagrant soporta las versiones 4.0.x y 4.1.x</p>
+
+<h2>Instalando Vagrant</h2>
+
+<p>Descargar el paquete adecuado para su sistema operativo <a href="http://downloads.vagrantup.com/tags/v1.0.3">Descargar Vagrant</a>
+e instalarlo.</p>
+
+<!-- more -->
+
+
+<h2>Probando la instalaci&oacute;n</h2>
+
+<p>Abrir una terminal y ejecutar :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>check vagrant  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant
+</span><span class='line'>Usage: vagrant -v -h <span class="nb">command</span> &lt;args&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;-v, --version                    Print the version and exit.
+</span><span class='line'>-h, --help                       Print this help.
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  ...
+</span><span class='line'><span class="nv">$ </span>vagrant --version
+</span><span class='line'>Vagrant version 1.0.3
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Descargando una m&aacute;quina base (Base Box)</h2>
+
+<p>Vagrant funciona a base de m&aacute;quinas base que son
+distribuciones de cualquier sistema operativo ligeramente
+modificadas para que vagrant pueda ejecutarse en ellas,
+normalmente instalar ruby, chef.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>add base box  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Lo que hace este comando es agregar una m&aacute;quina base, es decir
+el archivo vmdk (el disco duro de la m&aacute;quina de virtual box)
+junto con otros archivos de configuraci&oacute;n a un directorio
+general: <code>$HOME/.vagrant.d/boxes</code></p>
+
+<p>La idea es que a partir de este se pueden crear muchos ambientes
+usando el mismo archivo descargado. Como en el ejemplo se descarga
+un ubuntu lucid de 32 bits, al crear otra m&aacute;quina virtual
+con vagrant, esta no se modifica solo se copia y se inicia la
+instalaci&oacute;n de paquetes, de esta forma si algo va mal se puede
+destruir la m&aacute;quina virtual y volver a regenerarla sin
+problemas y sin descargar nuevamente la m&aacute;quina base.</p>
+
+<h2>Creando la primera m&aacute;quina virtual</h2>
+
+<p>Los ambientes virtuales normalmente estan atados a un proyecto
+espec&iacute;fico en el que se este trabajando, por lo cual el siguiente
+comando debe ejecutarse dentro del directorio del proyecto.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>init vagrant  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant init lucid32
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Este comando crear&aacute; un archivo <code>Vagrantfile</code> en el cual
+esta la configuraci&oacute;n de la m&aacute;quina por ejemplo:</p>
+
+<ul>
+<li>Cu&aacute;l es el box base, y su url</li>
+<li>Qu&eacute; tipo de interfaz de red usa y cual IP usar</li>
+<li>Puertos redirigidos (forward ports) para acceder a puertos dentro del ambiente virtual</li>
+<li>Directorios compartidos (por defecto siempre se comparte /vagrant dentro del ambiente a la m&aacute;quina host en el directorio
+donde se encuentra el Vagrantfile</li>
+<li>El tipo de provisionador (puppet, chef o propio) esto es el
+sistema que se usar&aacute; para instalar los paquetes</li>
+</ul>
+
+
+<h2>Iniciando el ambiente virtual</h2>
+
+<p>Este comando toma la configuraci&oacute;n del proyecto en Vagrantfile
+e inicia una m&aacute;quina virtual en virtual box, y la provisiona
+dependiendo del sistema usado, en este momento no lo hemos definido todav&iacute;a
+y solo iniciar&aacute; la m&aacute;quina sin ning&uacute;n paquete
+extra instalado.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>vagrant up  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Importing base box <span class="s1">&#39;lucid32&#39;</span>...
+</span><span class='line'>Guest Additions Version: 4.1.0
+</span><span class='line'>VirtualBox Version: 4.1.4
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Matching MAC address <span class="k">for </span>NAT networking...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> VM booted and ready <span class="k">for </span>use!
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Mounting shared folders...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- v-root: /vagrant
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Ok la m&aacute;quina est&aacute; levantada y ejecut&aacute;ndose
+para ingresar podemos hacer ssh a esta:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>vagrant ssh  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Linux lucid32 2.6.32-33-generic <span class="c">#70-Ubuntu SMP Thu Jul 7 21:09:46 UTC 2011 i686 GNU/Linux</span>
+</span><span class='line'>Ubuntu 10.04.3 LTS&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Welcome to Ubuntu!
+</span><span class='line'> * Documentation:  https://help.ubuntu.com/
+</span><span class='line'>Last login: Thu Jul 21 13:07:53 2011 from 10.0.2.2
+</span><span class='line'>vagrant@lucid32:~<span class="err">$</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Provisionando la nueva m&aacute;quina</h2>
+
+<p>Una vez que la m&aacute;quina se esta ejecutando no tiene
+nada instalado, por lo que ahora lo que se requiere hacer es
+definir la forma en la que deseamos instalar el software base necesario,
+recordemos que la idea de usar vagrant es que podemos utilizar
+la misma receta en diferentes ambientes de desarrollo obteniendo
+siempre los mismos resultados.</p>
+
+<p>Para este caso usaremos <a href="http://wiki.opscode.com/display/chef/Chef+Solo">chef-solo</a></p>
+
+<p>Chef permite escribir las recetas de instalaci&oacute;n de paquetes
+usando un DSL escrito en ruby.</p>
+
+<p>Para activar chef, abrimos Vagrantfile y agregamos al final antes del
+&uacute;ltimo <code>end</code> lo siguiente:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>chef enabled  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Enable and configure the chef solo provisioner</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="ss">:chef_solo</span> <span class="k">do</span> <span class="o">|</span><span class="n">chef</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;# En este caso descargamos nuestro libro de recetas desde el web</span>
+</span><span class='line'><span class="sr">  # hay otras opciones para mantener las recetas dentro del proyecto</span>
+</span><span class='line'><span class="sr">chef.recipe_url = &quot;http:/</span><span class="o">/</span><span class="n">files</span><span class="o">.</span><span class="n">vagrantup</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">getting_started</span><span class="o">/</span><span class="n">cookbooks</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2"># Ejecuta la receta vagrant_main</span>
+</span><span class='line'><span class="s2"># la cual hace toda la magia</span>
+</span><span class='line'><span class="s2">chef.add_recipe(&quot;</span><span class="n">vagrant_main</span><span class="s2">&quot;)</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;  end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Y para ejecutar esta receta se necesita lanzar el comando:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>vagrant provision  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant provision
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running provisioner: Vagrant::Provisioners::ChefSolo...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Generating chef JSON and uploading...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running chef-solo...
+</span><span class='line'>stdin: is not a tty
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:24 -0700<span class="o">]</span> INFO: &lt;strong&gt;&lt;em&gt; Chef 0.10.2 &lt;/em&gt;&lt;/strong&gt;
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Setting the run_list to <span class="o">[</span><span class="s2">&quot;recipe[vagrant_main]&quot;</span><span class="o">]</span> from JSON
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Run List is <span class="o">[</span>recipe<span class="o">[</span>vagrant_main<span class="o">]]</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Run List expands to <span class="o">[</span>vagrant_main<span class="o">]</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Starting Chef Run <span class="k">for </span>lucid32
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Processing execute<span class="o">[</span>apt-get update<span class="o">]</span> action run <span class="o">(</span>apt::default line 20<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: execute<span class="o">[</span>apt-get update<span class="o">]</span> sh<span class="o">(</span>apt-get update<span class="o">)</span>
+</span><span class='line'>...
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:15 -0700<span class="o">]</span> INFO: Processing service<span class="o">[</span>apache2<span class="o">]</span> action restart <span class="o">(</span>apache2::default line 189<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: service<span class="o">[</span>apache2<span class="o">]</span> restarted
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Chef Run <span class="nb">complete </span>in 411.460964 seconds
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Running report handlers
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Report handlers <span class="nb">complete</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Redireccionar un puerto interno</h2>
+
+<p>Para poder acceder desde afuera del ambiente debemos modificar los puertos
+redireccionados.</p>
+
+<p>Para lo cual editamos <code>Vagrantfile</code></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>chef enabled  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Agregar esto cerca de la configuraci&amp;oacute;n de puertos comentada</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">forward_port</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">4567</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Para hacer que se tome en cuenta este nuevo puerto se debe recargar la m&aacute;quina</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>vagrant reload  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant reload
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Attempting graceful shutdown of VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">80</span> <span class="o">=</span>&gt; 4567 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Crear un archivo index.html para ver que est&aacute; funcionando</h2>
+
+<p>Abrir tu editor favorito y colocar lo siguiente:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>index html  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h1&gt;</span>Hello from a Vagrant VM<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Ir al navegador y abrir <a href="http://localhost:4567">localhost:4567</a></p>
+
+<p>Debe poder ver lo siguiente:</p>
+
+<p><img src="/images/posts/vagrant-working.png" title="Pagina web funcionando en vagrant" ></p>
+
+<h2>Eso es todo</h2>
+
+<p>Si necesitan ayuda en algun punto que no lo trate con mucha explicaci&oacute;n
+no duden en escribir en los comentarios.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Aislar ambientes de desarrollo con Vagrant]]></title>
+    <link href="http://marceloandrader.github.com/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant/"/>
+    <updated>2012-02-06T18:00:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant</id>
+    <content type="html"><![CDATA[<p>Si desarrollas en un solo tipo de 'stack' de desarrollo lo m&aacute;s
+com&uacute;n es instalar este stack en tu m&aacute;quina principal
+y desarrollar directamente en el sistema operativo de tu preferencia.</p>
+
+<p>En mi caso uso Mac OS y para desarrollar sitios web simples con el 'stack' tipo
+XAMP simplemente activaba apache y php que vienen preinstalados e instalaba
+mysql copiando los binarios descargados desde la p&aacute;gina web.</p>
+
+<p>Nada mal para la mayor&iacute;a de sitios que hab&aacute; desarrollado hasta ahora,
+pero los problemas comienzan a darse cuando ya no solo desarrollas en un
+solo lenguaje en el lado del servidor.</p>
+
+<!-- more -->
+
+
+<p>En los &uacute;ltimos a&ntilde;os he comenzado a desarrollar en ruby on rails
+as&iacute; que esto complica un poco el panorama de mantener todo dentro del
+mismo sistema operativo pero hay herramientas que fueron creadas para
+ayudarte en esto, como <a href="http://beginrescueend.com/rvm/">rvm</a> o
+<a href="https://github.com/sstephenson/rbenv">rbenv</a>.</p>
+
+<p>El problema real comienza cuando necesitas duplicar un bug que solo sucede
+en producci&oacute;n con versiones espec&iacute;ficas del software base instalado, para
+lo cual necesitas mantener instaladas diferentes versiones de php, ruby, mysql,
+tener tambi&eacute;n redis, realizar pruebas de nuevos lenguajes como nodejs
+tener diferentes servidores web como nginx o lighttpd.</p>
+
+<p>Tambi&eacute;n es un problema tener varios clientes, cada uno con un stack
+diferente de despliegue, cada uno con versiones diferentes de compiladores,
+interpretes, etc.</p>
+
+<p>Buscando la mejor manera de manejar este problema encontr&eacute; un software
+que me ha ayudado mucho, su nombre es <a href="http://vagrantup.com/">Vagrant</a>.</p>
+
+<p>La soluci&oacute;n que propone este software es mantener un proyecto completamente
+independiente de otros proyectos a trav&eacute;s de m&aacute;quinas virtuales, para lo
+cual depende de <a href="https://www.virtualbox.org/">VirtualBox</a> y facilita la
+construcci&oacute;n de est&aacute;s m&aacute;quinas automatizando las instalaciones con <a href="http://puppetlabs.com/">puppet</a>
+o <a href="http://www.opscode.com/chef/">chef</a>.</p>
+
+<p>Estuve probando este sistema en los &uacute;ltimos proyectos y me ha encantado,
+aparte de vagrant que ayuda en la gesti&oacute;n de las m&aacute;quinas virtuales,
+el que m&aacute;s se luce es chef, la idea es que puedes tener toda una 'receta'
+para instalar todo el software necesario para que se ejecute tu aplicaci&oacute;n
+sobre el sistema operativo que ejecutas en producci&oacute;n, si lo usas
+desde el primer momento del proyecto crear tu sistema de producci&oacute;n
+es tan f&aacute;cil como ejecutar un comando.</p>
+
+<p>En un post siguiente les contar&eacute; un poco m&aacute;s como se configura vagrant
+y como se crea una receta b&aacute;sica con chef.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: web | Marcelo Andrade]]></title>
+  <link href="http://marceloandrader.github.com/blog/categories/web/atom.xml" rel="self"/>
+  <link href="http://marceloandrader.github.com/"/>
+  <updated>2013-02-19T13:51:40-05:00</updated>
+  <id>http://marceloandrader.github.com/</id>
+  <author>
+    <name><![CDATA[Marcelo Andrade]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Aplicaciones Web]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/16/dependencias-de-aplicaciones-web/"/>
+    <updated>2011-12-16T09:51:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/16/dependencias-de-aplicaciones-web</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/start-page-chrome.png" title="Mi p&aacute;gina de inicio en Chrome" ></p>
+
+<p>En esta secci&oacute;n s&iacute; hay mucho por contar, cada d&iacute;a dependo m&aacute;s y m&aacute;s en servicios web.</p>
+
+<!-- more -->
+
+
+<p>Entre los que m&aacute;s uso por frecuencia est&aacute;n:</p>
+
+<ul>
+<li><strong><a href="http://mail.google.com/">Gmail</a></strong> Para el correo personal</li>
+<li><strong><a href="http://github.com/">Github</a></strong> Para control de c&oacute;digo fuente</li>
+<li><strong><a href="http://campfirenow.com/">Campfire</a></strong> Chat as&iacute;ncrono</li>
+<li><strong><a href="http://docs.google.com/">Google docs</a></strong> Para mantener documentos en la nube</li>
+<li><strong><a href="http://calendar.google.com/">Google calendar</a></strong> Para recordar citas</li>
+<li><strong><a href="http://www.google.com/reader/">Google reader</a></strong> Para mantener los feeds</li>
+<li><strong><a href="http://www.dropbox.com/">Dropbox</a></strong> Para respaldar y compartir archivos</li>
+<li><strong><a href="http://www.google.com/apps/">Google apps</a></strong> Para el correo del trabajo</li>
+<li><strong><a href="http://getcloudapp.com/">CloudApp</a></strong> para compartir screenshots</li>
+</ul>
+
+
+<p>Estas no son precisamente dependencias, m&aacute;s bien son como un 'nice to have':</p>
+
+<ul>
+<li><strong><a href="https://twitter.com/MarceloAndrade">Twitter</a></strong> Para estar al tanto de lo que pasa</li>
+<li><strong><a href="https://facebook.com/marcelo.andrade">Facebook</a></strong> Para estar en contacto con la familia</li>
+<li><strong><a href="https://plus.google.com/103010069734862462788">Google+</a></strong> Cuando queda tiempo</li>
+</ul>
+
+
+<p>Cu&aacute;les son sus servicios web preferidos/necesarios para su trabajo?</p>
+]]></content>
+  </entry>
+  
+</feed>

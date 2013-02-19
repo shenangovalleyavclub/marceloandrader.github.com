@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Caso pr&aacute;ctico de uso de vagrant - Marcelo Andrade</title>
+  <meta name="author" content="Marcelo Andrade">
+
+  
+  <meta name="description" content="Para este ejemplo levantaremos un sistema linux (ubuntu)
+con apache como ejemplo del uso de vagrant. Pre-Requisitos Instalar VirtualBox Descargar &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcelo Andrade" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-6353164-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marceloandrader.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Caso Pr&aacute;ctico De Uso De Vagrant</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-28T17:01:00-05:00" pubdate data-updated="true">May 28<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Para este ejemplo levantaremos un sistema linux (ubuntu)
+con apache como ejemplo del uso de vagrant.</p>
+
+<h2>Pre-Requisitos</h2>
+
+<p>Instalar VirtualBox <a href="http://www.virtualbox.org/wiki/Downloads">Descargar VirtualBox</a>
+vagrant soporta las versiones 4.0.x y 4.1.x</p>
+
+<h2>Instalando Vagrant</h2>
+
+<p>Descargar el paquete adecuado para su sistema operativo <a href="http://downloads.vagrantup.com/tags/v1.0.3">Descargar Vagrant</a>
+e instalarlo.</p>
+
+<!-- more -->
+
+
+<h2>Probando la instalaci&oacute;n</h2>
+
+<p>Abrir una terminal y ejecutar :</p>
+
+<figure class='code'><figcaption><span>check vagrant  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant
+</span><span class='line'>Usage: vagrant -v -h <span class="nb">command</span> &lt;args&gt;
+</span><span class='line'>
+</span><span class='line'>    -v, --version                    Print the version and exit.
+</span><span class='line'>    -h, --help                       Print this help.
+</span><span class='line'>  ...
+</span><span class='line'><span class="nv">$ </span>vagrant --version
+</span><span class='line'>Vagrant version 1.0.3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Descargando una m&aacute;quina base (Base Box)</h2>
+
+<p>Vagrant funciona a base de m&aacute;quinas base que son
+distribuciones de cualquier sistema operativo ligeramente
+modificadas para que vagrant pueda ejecutarse en ellas,
+normalmente instalar ruby, chef.</p>
+
+<figure class='code'><figcaption><span>add base box  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lo que hace este comando es agregar una m&aacute;quina base, es decir
+el archivo vmdk (el disco duro de la m&aacute;quina de virtual box)
+junto con otros archivos de configuraci&oacute;n a un directorio
+general: <code>$HOME/.vagrant.d/boxes</code></p>
+
+<p>La idea es que a partir de este se pueden crear muchos ambientes
+usando el mismo archivo descargado. Como en el ejemplo se descarga
+un ubuntu lucid de 32 bits, al crear otra m&aacute;quina virtual
+con vagrant, esta no se modifica solo se copia y se inicia la
+instalaci&oacute;n de paquetes, de esta forma si algo va mal se puede
+destruir la m&aacute;quina virtual y volver a regenerarla sin
+problemas y sin descargar nuevamente la m&aacute;quina base.</p>
+
+<h2>Creando la primera m&aacute;quina virtual</h2>
+
+<p>Los ambientes virtuales normalmente estan atados a un proyecto
+espec&iacute;fico en el que se este trabajando, por lo cual el siguiente
+comando debe ejecutarse dentro del directorio del proyecto.</p>
+
+<figure class='code'><figcaption><span>init vagrant  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant init lucid32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Este comando crear&aacute; un archivo <code>Vagrantfile</code> en el cual
+esta la configuraci&oacute;n de la m&aacute;quina por ejemplo:</p>
+
+<ul>
+<li>Cu&aacute;l es el box base, y su url</li>
+<li>Qu&eacute; tipo de interfaz de red usa y cual IP usar</li>
+<li>Puertos redirigidos (forward ports) para acceder a puertos dentro del ambiente virtual</li>
+<li>Directorios compartidos (por defecto siempre se comparte /vagrant dentro del ambiente a la m&aacute;quina host en el directorio
+donde se encuentra el Vagrantfile</li>
+<li>El tipo de provisionador (puppet, chef o propio) esto es el
+sistema que se usar&aacute; para instalar los paquetes</li>
+</ul>
+
+
+<h2>Iniciando el ambiente virtual</h2>
+
+<p>Este comando toma la configuraci&oacute;n del proyecto en Vagrantfile
+e inicia una m&aacute;quina virtual en virtual box, y la provisiona
+dependiendo del sistema usado, en este momento no lo hemos definido todav&iacute;a
+y solo iniciar&aacute; la m&aacute;quina sin ning&uacute;n paquete
+extra instalado.</p>
+
+<figure class='code'><figcaption><span>vagrant up  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant up
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Importing base box <span class="s1">&#39;lucid32&#39;</span>...
+</span><span class='line'>Guest Additions Version: 4.1.0
+</span><span class='line'>VirtualBox Version: 4.1.4
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Matching MAC address <span class="k">for </span>NAT networking...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> VM booted and ready <span class="k">for </span>use!
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Mounting shared folders...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- v-root: /vagrant
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ok la m&aacute;quina est&aacute; levantada y ejecut&aacute;ndose
+para ingresar podemos hacer ssh a esta:</p>
+
+<figure class='code'><figcaption><span>vagrant ssh  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant ssh
+</span><span class='line'>Linux lucid32 2.6.32-33-generic <span class="c">#70-Ubuntu SMP Thu Jul 7 21:09:46 UTC 2011 i686 GNU/Linux</span>
+</span><span class='line'>Ubuntu 10.04.3 LTS
+</span><span class='line'>
+</span><span class='line'>Welcome to Ubuntu!
+</span><span class='line'> * Documentation:  https://help.ubuntu.com/
+</span><span class='line'>Last login: Thu Jul 21 13:07:53 2011 from 10.0.2.2
+</span><span class='line'>vagrant@lucid32:~<span class="nv">$ </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Provisionando la nueva m&aacute;quina</h2>
+
+<p>Una vez que la m&aacute;quina se esta ejecutando no tiene
+nada instalado, por lo que ahora lo que se requiere hacer es
+definir la forma en la que deseamos instalar el software base necesario,
+recordemos que la idea de usar vagrant es que podemos utilizar
+la misma receta en diferentes ambientes de desarrollo obteniendo
+siempre los mismos resultados.</p>
+
+<p>Para este caso usaremos <a href="http://wiki.opscode.com/display/chef/Chef+Solo">chef-solo</a></p>
+
+<p>Chef permite escribir las recetas de instalaci&oacute;n de paquetes
+usando un DSL escrito en ruby.</p>
+
+<p>Para activar chef, abrimos Vagrantfile y agregamos al final antes del
+&uacute;ltimo <code>end</code> lo siguiente:</p>
+
+<figure class='code'><figcaption><span>chef enabled  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Enable and configure the chef solo provisioner</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="ss">:chef_solo</span> <span class="k">do</span> <span class="o">|</span><span class="n">chef</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># En este caso descargamos nuestro libro de recetas desde el web</span>
+</span><span class='line'>    <span class="c1"># hay otras opciones para mantener las recetas dentro del proyecto</span>
+</span><span class='line'>    <span class="n">chef</span><span class="o">.</span><span class="n">recipe_url</span> <span class="o">=</span> <span class="s2">&quot;http://files.vagrantup.com/getting_started/cookbooks.tar.gz&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Ejecuta la receta vagrant_main</span>
+</span><span class='line'>    <span class="c1"># la cual hace toda la magia</span>
+</span><span class='line'>    <span class="n">chef</span><span class="o">.</span><span class="n">add_recipe</span><span class="p">(</span><span class="s2">&quot;vagrant_main&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Y para ejecutar esta receta se necesita lanzar el comando:</p>
+
+<figure class='code'><figcaption><span>vagrant provision  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant provision
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running provisioner: Vagrant::Provisioners::ChefSolo...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Generating chef JSON and uploading...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Running chef-solo...
+</span><span class='line'>stdin: is not a tty
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:24 -0700<span class="o">]</span> INFO: *** Chef 0.10.2 ***
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Setting the run_list to <span class="o">[</span><span class="s2">&quot;recipe[vagrant_main]&quot;</span><span class="o">]</span> from JSON
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Run List is <span class="o">[</span>recipe<span class="o">[</span>vagrant_main<span class="o">]]</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Run List expands to <span class="o">[</span>vagrant_main<span class="o">]</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Starting Chef Run <span class="k">for </span>lucid32
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: Processing execute<span class="o">[</span>apt-get update<span class="o">]</span> action run <span class="o">(</span>apt::default line 20<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:09:25 -0700<span class="o">]</span> INFO: execute<span class="o">[</span>apt-get update<span class="o">]</span> sh<span class="o">(</span>apt-get update<span class="o">)</span>
+</span><span class='line'>...
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:15 -0700<span class="o">]</span> INFO: Processing service<span class="o">[</span>apache2<span class="o">]</span> action restart <span class="o">(</span>apache2::default line 189<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: service<span class="o">[</span>apache2<span class="o">]</span> restarted
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Chef Run <span class="nb">complete </span>in 411.460964 seconds
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Running report handlers
+</span><span class='line'><span class="o">[</span>Mon, 28 May 2012 16:16:17 -0700<span class="o">]</span> INFO: Report handlers <span class="nb">complete</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Redireccionar un puerto interno</h2>
+
+<p>Para poder acceder desde afuera del ambiente debemos modificar los puertos
+redireccionados.</p>
+
+<p>Para lo cual editamos <code>Vagrantfile</code></p>
+
+<figure class='code'><figcaption><span>chef enabled  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Agregar esto cerca de la configuraci&amp;oacute;n de puertos comentada</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">forward_port</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">4567</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Para hacer que se tome en cuenta este nuevo puerto se debe recargar la m&aacute;quina</p>
+
+<figure class='code'><figcaption><span>vagrant reload  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>vagrant reload
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Attempting graceful shutdown of VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>forwarded ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Forwarding ports...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">22</span> <span class="o">=</span>&gt; 2222 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> -- <span class="nv">80</span> <span class="o">=</span>&gt; 4567 <span class="o">(</span>adapter 1<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Creating shared folders metadata...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Clearing any previously <span class="nb">set </span>network interfaces...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Booting VM...
+</span><span class='line'><span class="o">[</span>default<span class="o">]</span> Waiting <span class="k">for </span>VM to boot. This can take a few minutes.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Crear un archivo index.html para ver que est&aacute; funcionando</h2>
+
+<p>Abrir tu editor favorito y colocar lo siguiente:</p>
+
+<figure class='code'><figcaption><span>index html  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Hello from a Vagrant VM<span class="nt">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ir al navegador y abrir <a href="http://localhost:4567">localhost:4567</a></p>
+
+<p>Debe poder ver lo siguiente:</p>
+
+<p><img src="/images/posts/vagrant-working.png" title="Pagina web funcionando en vagrant" ></p>
+
+<h2>Eso es todo</h2>
+
+<p>Si necesitan ayuda en algun punto que no lo trate con mucha explicaci&oacute;n
+no duden en escribir en los comentarios.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marcelo Andrade</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-28T17:01:00-05:00" pubdate data-updated="true">May 28<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/desarrollo/'>desarrollo</a>, <a class='category' href='/blog/categories/software-/'>software,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/" data-via="MarceloAndrade" data-counturl="http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant/" title="Previous Post: Aislar ambientes de desarrollo con Vagrant">&laquo; Aislar ambientes de desarrollo con Vagrant</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/19/aplicaciones-web-del-lado-del-cliente-con-mvvm/" title="Next Post: Aplicaciones Web del lado del Cliente con MVVM">Aplicaciones Web del lado del Cliente con MVVM &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/19/aplicaciones-web-del-lado-del-cliente-con-mvvm/">Aplicaciones Web del lado del Cliente con MVVM</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/28/caso-practico-de-uso-de-vagrant/">Caso pr&aacute;ctico de uso de vagrant</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant/">Aislar ambientes de desarrollo con Vagrant</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/16/dependencias-de-aplicaciones-web/">Dependencias de Aplicaciones Web</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/15/dependencias-de-aplicaciones-cli/">Dependencias de Aplicaciones CLI</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/marceloandrader">@marceloandrader</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'marceloandrader',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("MarceloAndrade", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/MarceloAndrade" class="twitter-follow-button" data-show-count="false">Follow @MarceloAndrade</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Marcelo Andrade -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blog-marcelo-andrade';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/';
+        var disqus_url = 'http://marceloandrader.github.com/blog/2012/05/28/caso-practico-de-uso-de-vagrant/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

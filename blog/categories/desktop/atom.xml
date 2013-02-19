@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: desktop | Marcelo Andrade]]></title>
+  <link href="http://marceloandrader.github.com/blog/categories/desktop/atom.xml" rel="self"/>
+  <link href="http://marceloandrader.github.com/"/>
+  <updated>2013-02-19T13:51:40-05:00</updated>
+  <id>http://marceloandrader.github.com/</id>
+  <author>
+    <name><![CDATA[Marcelo Andrade]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Software de Escritorio]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-software-de-escritorio/"/>
+    <updated>2011-12-15T16:34:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-software-de-escritorio</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/dock-marcelo-andrade.png" title="Mi actual Dock" ></p>
+
+<p>Como sistema operativo uso Mac OS X (Snow Leopard), las aplicaciones que m&aacute;s uso en orden de frecuencia de
+uso ser&iacute;an:</p>
+
+<!-- more -->
+
+
+<ul>
+<li><strong>Google Chrome</strong> Para navegar y desarrollar</li>
+<li><strong>Skype</strong> Para estar en contacto con compa&ntilde;eros del trabajo</li>
+<li><strong>Adium</strong> Para conectarme al gtalk</li>
+<li><strong>Terminal</strong> Ejecutar comandos</li>
+<li><strong>MacVim</strong> Edici&oacute;n de texto, c&oacute;digo</li>
+<li><strong>TextMate</strong> Edici&oacute;n de texto, c&oacute;digo</li>
+<li><strong>GitHub</strong> Control de c&oacute;digo fuente</li>
+<li><strong>Finder</strong> Navegar archivos</li>
+<li><strong>Photoshop</strong> Ver dise&ntilde;os, editar im&aacute;genes</li>
+<li><strong>Cloud</strong> Compartir screenshots</li>
+<li><strong>Cyberduck</strong> Conectarme a servidores remotos para editar archivos</li>
+<li><strong>OpenOffice/LibreOffice</strong> Ver documentos de Word/Excel</li>
+<li><strong>Sequel Pro</strong> Conectarme a mysql</li>
+<li><strong>VirtualBox</strong> Para manejar m&aacute;quinas virtuales (normalmente servidores)</li>
+</ul>
+
+
+<p>Entre los servicios instalados en mi computador est&aacute;n:</p>
+
+<ul>
+<li><strong>MySQL Server</strong> Bases de datos</li>
+<li><strong>PHP</strong> Para desarrollo de p&aacute;ginas din&aacute;micas</li>
+<li><strong>Ruby</strong> Para desarrollo de ruby on rails o scripting</li>
+<li><strong>Apache</strong> Como servidor web</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: software | Marcelo Andrade]]></title>
+  <link href="http://marceloandrader.github.com/blog/categories/software/atom.xml" rel="self"/>
+  <link href="http://marceloandrader.github.com/"/>
+  <updated>2013-02-19T13:51:40-05:00</updated>
+  <id>http://marceloandrader.github.com/</id>
+  <author>
+    <name><![CDATA[Marcelo Andrade]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Aplicaciones Web]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/16/dependencias-de-aplicaciones-web/"/>
+    <updated>2011-12-16T09:51:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/16/dependencias-de-aplicaciones-web</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/start-page-chrome.png" title="Mi p&aacute;gina de inicio en Chrome" ></p>
+
+<p>En esta secci&oacute;n s&iacute; hay mucho por contar, cada d&iacute;a dependo m&aacute;s y m&aacute;s en servicios web.</p>
+
+<!-- more -->
+
+
+<p>Entre los que m&aacute;s uso por frecuencia est&aacute;n:</p>
+
+<ul>
+<li><strong><a href="http://mail.google.com/">Gmail</a></strong> Para el correo personal</li>
+<li><strong><a href="http://github.com/">Github</a></strong> Para control de c&oacute;digo fuente</li>
+<li><strong><a href="http://campfirenow.com/">Campfire</a></strong> Chat as&iacute;ncrono</li>
+<li><strong><a href="http://docs.google.com/">Google docs</a></strong> Para mantener documentos en la nube</li>
+<li><strong><a href="http://calendar.google.com/">Google calendar</a></strong> Para recordar citas</li>
+<li><strong><a href="http://www.google.com/reader/">Google reader</a></strong> Para mantener los feeds</li>
+<li><strong><a href="http://www.dropbox.com/">Dropbox</a></strong> Para respaldar y compartir archivos</li>
+<li><strong><a href="http://www.google.com/apps/">Google apps</a></strong> Para el correo del trabajo</li>
+<li><strong><a href="http://getcloudapp.com/">CloudApp</a></strong> para compartir screenshots</li>
+</ul>
+
+
+<p>Estas no son precisamente dependencias, m&aacute;s bien son como un 'nice to have':</p>
+
+<ul>
+<li><strong><a href="https://twitter.com/MarceloAndrade">Twitter</a></strong> Para estar al tanto de lo que pasa</li>
+<li><strong><a href="https://facebook.com/marcelo.andrade">Facebook</a></strong> Para estar en contacto con la familia</li>
+<li><strong><a href="https://plus.google.com/103010069734862462788">Google+</a></strong> Cuando queda tiempo</li>
+</ul>
+
+
+<p>Cu&aacute;les son sus servicios web preferidos/necesarios para su trabajo?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Aplicaciones CLI]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli/"/>
+    <updated>2011-12-15T17:16:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-aplicaciones-cli</id>
+    <content type="html"><![CDATA[<p>Estas son mis aplicaciones preferidas, para obtener los comandos que m&aacute;s uso en la l&iacute;nea de comandos</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>comandos m&aacute;s usados  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">history</span> | awk <span class="s1">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &quot; &quot; CMD[a]/count*100 &quot;% &quot; a;}&#39;</span> | grep -v <span class="s2">&quot;./&quot;</span> | column -c3 -s <span class="s2">&quot; &quot;</span> -t | sort -nr | nl |  head -n20
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<!-- more -->
+
+
+<p>Resultado:</p>
+
+<pre>
+     1  3194  33.7347%    git     # para trabajar con c&oacute;digo fuente
+     2  1535  16.2125%    cd
+     3  854   9.01986%    ls
+     4  486   5.13308%    ssh     # conexi&oacute;n a servidores
+     5  195   2.05957%    cat
+     6  193   2.03845%    sudo
+     7  172   1.81665%    mate
+     8  155   1.63709%    curl    # probar peticiones HTTP
+     9  152   1.60541%    tail    # ver logs
+    10  151   1.59485%    vim
+    11  150   1.58428%    rake
+    12  120   1.26743%    cap     # desplegar aplicaciones (capistrano)
+    13  97    1.0245%     ping
+    14  85    0.897761%   phpunit
+    15  80    0.844951%   find
+    16  79    0.83439%    rm
+    17  79    0.83439%    mysql
+    18  73    0.771018%   php
+    19  68    0.718209%   irb
+    20  61    0.644275%   mvim
+</pre>
+
+
+<p>Pueden comentar el uso de su l&iacute;nea de comandos.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dependencias de Software de Escritorio]]></title>
+    <link href="http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-software-de-escritorio/"/>
+    <updated>2011-12-15T16:34:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2011/12/15/dependencias-de-software-de-escritorio</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/dock-marcelo-andrade.png" title="Mi actual Dock" ></p>
+
+<p>Como sistema operativo uso Mac OS X (Snow Leopard), las aplicaciones que m&aacute;s uso en orden de frecuencia de
+uso ser&iacute;an:</p>
+
+<!-- more -->
+
+
+<ul>
+<li><strong>Google Chrome</strong> Para navegar y desarrollar</li>
+<li><strong>Skype</strong> Para estar en contacto con compa&ntilde;eros del trabajo</li>
+<li><strong>Adium</strong> Para conectarme al gtalk</li>
+<li><strong>Terminal</strong> Ejecutar comandos</li>
+<li><strong>MacVim</strong> Edici&oacute;n de texto, c&oacute;digo</li>
+<li><strong>TextMate</strong> Edici&oacute;n de texto, c&oacute;digo</li>
+<li><strong>GitHub</strong> Control de c&oacute;digo fuente</li>
+<li><strong>Finder</strong> Navegar archivos</li>
+<li><strong>Photoshop</strong> Ver dise&ntilde;os, editar im&aacute;genes</li>
+<li><strong>Cloud</strong> Compartir screenshots</li>
+<li><strong>Cyberduck</strong> Conectarme a servidores remotos para editar archivos</li>
+<li><strong>OpenOffice/LibreOffice</strong> Ver documentos de Word/Excel</li>
+<li><strong>Sequel Pro</strong> Conectarme a mysql</li>
+<li><strong>VirtualBox</strong> Para manejar m&aacute;quinas virtuales (normalmente servidores)</li>
+</ul>
+
+
+<p>Entre los servicios instalados en mi computador est&aacute;n:</p>
+
+<ul>
+<li><strong>MySQL Server</strong> Bases de datos</li>
+<li><strong>PHP</strong> Para desarrollo de p&aacute;ginas din&aacute;micas</li>
+<li><strong>Ruby</strong> Para desarrollo de ruby on rails o scripting</li>
+<li><strong>Apache</strong> Como servidor web</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
