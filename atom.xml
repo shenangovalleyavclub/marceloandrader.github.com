@@ -4,7 +4,7 @@
   <title><![CDATA[Marcelo Andrade]]></title>
   <link href="http://marceloandrader.github.com/atom.xml" rel="self"/>
   <link href="http://marceloandrader.github.com/"/>
-  <updated>2013-09-03T17:51:52-05:00</updated>
+  <updated>2013-11-15T18:16:39-05:00</updated>
   <id>http://marceloandrader.github.com/</id>
   <author>
     <name><![CDATA[Marcelo Andrade]]></name>
@@ -12,6 +12,222 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Docker]]></title>
+    <link href="http://marceloandrader.github.com/blog/2013/11/15/docker/"/>
+    <updated>2013-11-15T17:19:00-05:00</updated>
+    <id>http://marceloandrader.github.com/blog/2013/11/15/docker</id>
+    <content type="html"><![CDATA[<p>Desplegar aplicaciones en linux es un proceso fácil si tu aplicación
+solo usa un servidor, normalmente se usa el sistema propio de manejo de paquetes
+para poner a punto el servidor con todos los componentes instalados
+para publicar una aplicación web, sitio web dinámico, etc.</p>
+
+<!-- more -->
+
+
+<p>Para evitar duplicar el esfuerzo de armar el servidor con todo el software base
+primero en desarrollo, luego en el ambiente de pruebas y luego en producción
+se puede utilizar un sistema como <a href="http://www.opscode.com/chef/">Chef</a> o
+<a href="http://puppetlabs.com/puppet/what-is-puppet">Puppet</a> para organizar un
+poco la &#8220;receta&#8221; necesaria para duplicar el mismo sistema en otro servidor.</p>
+
+<p>El problema de estos sistemas desde mi punto de vista es que es muy
+difícil que una misma receta funcione tanto en un ubuntu como en centos
+o en otro sabor de linux.</p>
+
+<p>La solución a esto la he visto en <a href="http://www.docker.io/">docker</a> este
+proyecto permite empaquetar una aplicación con todas sus dependencias de software
+en un contenedor que se puede ejecutar en cualquier linux que soporte <a href="http://linuxcontainers.org/">lxc</a>.</p>
+
+<p>Docker es una utilidad de más alto nivel que permite usar
+fácilmente linux containers, crearlos, provisionarlos, publicarlos y desplegarlos.</p>
+
+<p>Para empezar a usarlo la forma más fácil en mi laptop con sistema mac
+es usando <a href="http://marceloandrader.github.com/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant/">vagrant</a>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/dotcloud/docker.git
+</span><span class='line'><span class="nb">cd </span>docker
+</span><span class='line'>vagrant up
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Una vez que vagrant descargue la máquina base, e instale docker y sus dependencias
+el sistema está listo para usarse. Se puede ingresar a la máquina con ubuntu y docker
+instalados con:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vagrant ssh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Docker tiene un registro de contenedores público en <a href="https://index.docker.io/">index.docker.io</a>
+pero también se puede instalar la aplicación de registro para usarlo internamente <a href="https://github.com/dotcloud/docker-registry">docker registry</a>
+la idea es que este registro es donde se envía (push) y se toma (pull) imágenes ya generadas
+de contenedores para ser usadas como base o como vienen.</p>
+
+<p>Antes de pasar a cómo usar docker es importante tener en cuenta los terminos
+que usa docker para referirse a sus conceptos:</p>
+
+<ul>
+<li><strong>container</strong> o contenedor es una imagen de un sistema que se está ejecutando</li>
+<li><strong>image</strong> o imagen es un paquete que tiene todo el software base y dependencias ya configuradas para ser ejecutado</li>
+<li><strong>Dockerfile</strong> o Dockerfile es una archivo de definición de una imagen</li>
+<li><strong>layers</strong> o capas, docker usa un sistema de archivos AUFS que es un sistema que permite crear capas
+de sistemas de archivo, más adelante un ejemplo de como funciona.</li>
+</ul>
+
+
+<p>Para empezar a usar la forma más sencilla es invocar en modo interactivo un bash dentro de un contenedor:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo docker run -t -i ubuntu /bin/bash
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si el registro local de docker aun no tiene la imagen ubuntu descargada, primero la descargará
+y una vez hecho esto ejecutará el comando <code>run</code> que inicia el contenedor basado en la imagen <code>ubuntu</code>
+como pueden observar el nuevo prompt es algo como:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>root@acbdd2d5ea49:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>este prompt es del sistema del contenedor ejecutándose, como se observó el tiempo de arranque es
+casi instantaneo, comparado con un boot a una instancia virtualizada de aproximadamente 2-5 minutos
+dependiendo de la máquina host.</p>
+
+<p>Si inician otra sesión <code>vagrant ssh</code> y ejecutan <code>sudo docker ps</code> les indicará que contenedores están
+ejecutándose en este momento.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vagrant@precise64:~<span class="nv">$ </span>sudo docker ps
+</span><span class='line'>ID                  IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</span><span class='line'>acbdd2d5ea49        ubuntu:12.04        /bin/bash           3 minutes ago       Up 3 minutes                            gray_tiger
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Para terminar la ejecución del contenedor se puede simplemente hacer exit en la sesión de bash dentro del contenedor
+y esto hara que el contenedor ya no se esté ejecutando.</p>
+
+<p>Si hacen <code>docker ps</code> nuevamente el contenedor ya no está. Para ver contenedores que ya no están en uso se usa <code>sudo docker ps -a</code>.</p>
+
+<p>Hasta aquí nada del otro mundo ejecutar un bash dentro de un contenedor lo interesante viene
+cuando dentro de este bash se puede comenzar a instalar software adicional por ejemplo instalar
+apache para servir páginas web estáticas, lo interesante de esto es que el sistema principal
+se mantiene libre de dependencias de la misma aplicación, todo esto está dentro del contenedor.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo docker run -t -i ubuntu /bin/bash
+</span><span class='line'>root@acbdd2d5ea49:/# apt-get update
+</span><span class='line'>root@acbdd2d5ea49:/# apt-get install -y apache2
+</span><span class='line'>root@acbdd2d5ea49:/# <span class="nb">exit</span>
+</span><span class='line'>sudo docker ps -a
+</span><span class='line'><span class="c"># verificar el nombre del contenedor en la última columna en mi caso es gray_tiger</span>
+</span><span class='line'>sudo docker commit gray_tiger marceloandrader/apache2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Una vez hecho esto localmente tienes una imagen llamada <code>marceloandrader/apache2</code> que es
+apache2 dentro de un contenedor para ejecutarla y publicar algun sitio web:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo docker run -t -i -p 80 -v /home/vagrant:/var/www marceloandrader/apache2 /bin/bash
+</span><span class='line'>root@acbdd2d5ea49:/# service apache2 start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ahora desde otra sesión ssh se puede verificar que apache esté sirviendo los archivos que se encuentran
+en /home/vagrant en el sistema host a través de apache2 ejecutándose en el contenedor</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vagrant@precise64:~<span class="nv">$ </span>curl http://0.0.0.0:8080/
+</span><span class='line'>About to connect<span class="o">()</span> to 0.0.0.0 port 8080 <span class="o">(</span><span class="c">#0)</span>
+</span><span class='line'>*   Trying 0.0.0.0... connected
+</span><span class='line'>&gt; GET / HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.22.0 <span class="o">(</span>x86_64-pc-linux-gnu<span class="o">)</span> libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3
+</span><span class='line'>&gt; Host: 0.0.0.0:8080
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Date: Fri, 15 Nov 2013 23:14:14 GMT
+</span><span class='line'>&lt; Server: Apache/2.2.22 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Content-Length: 1579
+</span><span class='line'>&lt; Content-Type: text/html;charset<span class="o">=</span>UTF-8
+</span><span class='line'>&lt;
+</span><span class='line'>&lt;!DOCTYPE HTML PUBLIC <span class="s2">&quot;-//W3C//DTD HTML 3.2 Final//EN&quot;</span>&gt;
+</span><span class='line'>&lt;html&gt;
+</span><span class='line'> &lt;head&gt;
+</span><span class='line'>  &lt;title&gt;Index of /&lt;/title&gt;
+</span><span class='line'> &lt;/head&gt;
+</span><span class='line'> &lt;body&gt;
+</span><span class='line'>&lt;h1&gt;Index of /&lt;/h1&gt;
+</span><span class='line'>&lt;table&gt;&lt;tr&gt;&lt;th&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/blank.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[ICO]&quot;</span>&gt;&lt;/th&gt;&lt;th&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;?C=N;O=D&quot;</span>&gt;Name&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;?C=M;O=A&quot;</span>&gt;Last modified&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;?C=S;O=A&quot;</span>&gt;Size&lt;/a&gt;&lt;/th&gt;&lt;th&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;?C=D;O=A&quot;</span>&gt;Description&lt;/a&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th <span class="nv">colspan</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;td <span class="nv">valign</span><span class="o">=</span><span class="s2">&quot;top&quot;</span>&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/folder.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[DIR]&quot;</span>&gt;&lt;/td&gt;&lt;td&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;GateOne/&quot;</span>&gt;GateOne/&lt;/a&gt;&lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;07-Nov-2013 22:41  &lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;td <span class="nv">valign</span><span class="o">=</span><span class="s2">&quot;top&quot;</span>&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/unknown.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[   ]&quot;</span>&gt;&lt;/td&gt;&lt;td&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;VBoxGuestAdditions_4.2.12.iso&quot;</span>&gt;VBoxGuestAdditions_4.2.12.iso&lt;/a&gt;&lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;12-Apr-2013 10:17  &lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt; 57M&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;td <span class="nv">valign</span><span class="o">=</span><span class="s2">&quot;top&quot;</span>&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/folder.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[DIR]&quot;</span>&gt;&lt;/td&gt;&lt;td&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;docker-mysql/&quot;</span>&gt;docker-mysql/&lt;/a&gt;&lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;06-Nov-2013 15:35  &lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;  - &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;td <span class="nv">valign</span><span class="o">=</span><span class="s2">&quot;top&quot;</span>&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/text.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[TXT]&quot;</span>&gt;&lt;/td&gt;&lt;td&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;postinstall.sh&quot;</span>&gt;postinstall.sh&lt;/a&gt;&lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;14-Sep-2012 06:02  &lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;6.3K&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;td <span class="nv">valign</span><span class="o">=</span><span class="s2">&quot;top&quot;</span>&gt;&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/icons/text.gif&quot;</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">&quot;[TXT]&quot;</span>&gt;&lt;/td&gt;&lt;td&gt;&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;start-pph.sh&quot;</span>&gt;start-pph.sh&lt;/a&gt;&lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;06-Nov-2013 22:56  &lt;/td&gt;&lt;td <span class="nv">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span>&gt;641 &lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;tr&gt;&lt;th <span class="nv">colspan</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>&gt;&lt;hr&gt;&lt;/th&gt;&lt;/tr&gt;
+</span><span class='line'>&lt;/table&gt;
+</span><span class='line'>&lt;address&gt;Apache/2.2.22 <span class="o">(</span>Ubuntu<span class="o">)</span> Server at 0.0.0.0 Port 8080&lt;/address&gt;
+</span><span class='line'>&lt;/body&gt;&lt;/html&gt;
+</span><span class='line'>* Connection <span class="c">#0 to host 0.0.0.0 left intact</span>
+</span><span class='line'>* Closing connection <span class="c">#0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La idea de esto es que esta imagen llamada <code>marceloandrader/apache2</code> se la puede enviar a un sistema de producción
+y ejecutarla sin ningún cambio.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Aplicaciones Web del lado del Cliente con MVVM]]></title>
@@ -23,6 +239,9 @@ han comenzado a popularizarse, la idea es que mucho de lo que antes
 se hac&iacute;a en el servidor, ahora se lo puede hacer en el cliente (browser)
 y dejar al servidor solo como un API de acceso a la persistencia de
 los datos.</p>
+
+<!-- more -->
+
 
 <p>Ejemplos de este tipo de aplicaciones web son: Gmail, Twitter, Facebook, etc.</p>
 

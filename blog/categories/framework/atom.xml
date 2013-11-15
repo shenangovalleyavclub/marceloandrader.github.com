@@ -4,7 +4,7 @@
   <title><![CDATA[Category: framework | Marcelo Andrade]]></title>
   <link href="http://marceloandrader.github.com/blog/categories/framework/atom.xml" rel="self"/>
   <link href="http://marceloandrader.github.com/"/>
-  <updated>2013-09-03T17:51:52-05:00</updated>
+  <updated>2013-11-15T18:16:39-05:00</updated>
   <id>http://marceloandrader.github.com/</id>
   <author>
     <name><![CDATA[Marcelo Andrade]]></name>
@@ -23,6 +23,9 @@ han comenzado a popularizarse, la idea es que mucho de lo que antes
 se hac&iacute;a en el servidor, ahora se lo puede hacer en el cliente (browser)
 y dejar al servidor solo como un API de acceso a la persistencia de
 los datos.</p>
+
+<!-- more -->
+
 
 <p>Ejemplos de este tipo de aplicaciones web son: Gmail, Twitter, Facebook, etc.</p>
 
