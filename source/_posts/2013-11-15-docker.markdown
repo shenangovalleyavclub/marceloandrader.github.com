@@ -1,0 +1,159 @@
+---
+layout: post
+title: "Docker"
+date: 2013-11-15 17:19
+comments: true
+categories: [software, linux]
+---
+Desplegar aplicaciones en linux es un proceso fácil si tu aplicación 
+solo usa un servidor, normalmente se usa el sistema propio de manejo de paquetes
+para poner a punto el servidor con todos los componentes instalados
+para publicar una aplicación web, sitio web dinámico, etc.
+
+<!-- more -->
+
+Para evitar duplicar el esfuerzo de armar el servidor con todo el software base
+primero en desarrollo, luego en el ambiente de pruebas y luego en producción
+se puede utilizar un sistema como [Chef](http://www.opscode.com/chef/) o 
+[Puppet](http://puppetlabs.com/puppet/what-is-puppet) para organizar un 
+poco la "receta" necesaria para duplicar el mismo sistema en otro servidor.
+
+El problema de estos sistemas desde mi punto de vista es que es muy
+difícil que una misma receta funcione tanto en un ubuntu como en centos
+o en otro sabor de linux.
+
+La solución a esto la he visto en [docker](http://www.docker.io/) este
+proyecto permite empaquetar una aplicación con todas sus dependencias de software
+en un contenedor que se puede ejecutar en cualquier linux que soporte [lxc](http://linuxcontainers.org/).
+
+Docker es una utilidad de más alto nivel que permite usar 
+fácilmente linux containers, crearlos, provisionarlos, publicarlos y desplegarlos.
+
+Para empezar a usarlo la forma más fácil en mi laptop con sistema mac
+es usando [vagrant](/blog/2012/02/06/aislar-ambientes-de-desarrollo-con-vagrant/):
+
+{% codeblock lang:bash %}
+git clone https://github.com/dotcloud/docker.git
+cd docker
+vagrant up
+{% endcodeblock %}
+
+Una vez que vagrant descargue la máquina base, e instale docker y sus dependencias
+el sistema está listo para usarse. Se puede ingresar a la máquina con ubuntu y docker
+instalados con:
+
+{% codeblock lang:bash %}
+vagrant ssh
+{% endcodeblock %}
+
+Docker tiene un registro de contenedores público en [index.docker.io](https://index.docker.io/)
+pero también se puede instalar la aplicación de registro para usarlo internamente [docker registry](https://github.com/dotcloud/docker-registry)
+la idea es que este registro es donde se envía (push) y se toma (pull) imágenes ya generadas
+de contenedores para ser usadas como base o como vienen.
+
+Antes de pasar a cómo usar docker es importante tener en cuenta los terminos
+que usa docker para referirse a sus conceptos:
+
+- __container__ o contenedor es una imagen de un sistema que se está ejecutando
+- __image__ o imagen es un paquete que tiene todo el software base y dependencias ya configuradas para ser ejecutado
+- __Dockerfile__ o Dockerfile es una archivo de definición de una imagen
+- __layers__ o capas, docker usa un sistema de archivos AUFS que es un sistema que permite crear capas
+de sistemas de archivo, más adelante un ejemplo de como funciona.
+
+Para empezar a usar la forma más sencilla es invocar en modo interactivo un bash dentro de un contenedor:
+
+{% codeblock lang:bash %}
+sudo docker run -t -i ubuntu /bin/bash
+{% endcodeblock %}
+
+Si el registro local de docker aun no tiene la imagen ubuntu descargada, primero la descargará
+y una vez hecho esto ejecutará el comando `run` que inicia el contenedor basado en la imagen `ubuntu`
+como pueden observar el nuevo prompt es algo como:
+
+{% codeblock lang:bash %}
+root@acbdd2d5ea49:/#
+{% endcodeblock %}
+
+este prompt es del sistema del contenedor ejecutándose, como se observó el tiempo de arranque es
+casi instantaneo, comparado con un boot a una instancia virtualizada de aproximadamente 2-5 minutos
+dependiendo de la máquina host.
+
+Si inician otra sesión `vagrant ssh` y ejecutan `sudo docker ps` les indicará que contenedores están
+ejecutándose en este momento.
+
+{% codeblock lang:bash %}
+vagrant@precise64:~$ sudo docker ps
+ID                  IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+acbdd2d5ea49        ubuntu:12.04        /bin/bash           3 minutes ago       Up 3 minutes                            gray_tiger
+{% endcodeblock %}
+
+Para terminar la ejecución del contenedor se puede simplemente hacer exit en la sesión de bash dentro del contenedor
+y esto hara que el contenedor ya no se esté ejecutando.
+
+Si hacen `docker ps` nuevamente el contenedor ya no está. Para ver contenedores que ya no están en uso se usa `sudo docker ps -a`.
+
+Hasta aquí nada del otro mundo ejecutar un bash dentro de un contenedor lo interesante viene
+cuando dentro de este bash se puede comenzar a instalar software adicional por ejemplo instalar
+apache para servir páginas web estáticas, lo interesante de esto es que el sistema principal
+se mantiene libre de dependencias de la misma aplicación, todo esto está dentro del contenedor.
+
+{% codeblock lang:bash %}
+sudo docker run -t -i ubuntu /bin/bash
+root@acbdd2d5ea49:/# apt-get update
+root@acbdd2d5ea49:/# apt-get install -y apache2
+root@acbdd2d5ea49:/# exit
+sudo docker ps -a
+# verificar el nombre del contenedor en la última columna en mi caso es gray_tiger
+sudo docker commit gray_tiger marceloandrader/apache2
+{% endcodeblock %}
+
+Una vez hecho esto localmente tienes una imagen llamada `marceloandrader/apache2` que es
+apache2 dentro de un contenedor para ejecutarla y publicar algun sitio web:
+
+{% codeblock lang:bash %}
+sudo docker run -t -i -p 80 -v /home/vagrant:/var/www marceloandrader/apache2 /bin/bash
+root@acbdd2d5ea49:/# service apache2 start
+{% endcodeblock %}
+
+Ahora desde otra sesión ssh se puede verificar que apache esté sirviendo los archivos que se encuentran
+en /home/vagrant en el sistema host a través de apache2 ejecutándose en el contenedor
+
+{% codeblock lang:bash %}
+vagrant@precise64:~$ curl http://0.0.0.0:8080/
+About to connect() to 0.0.0.0 port 8080 (#0)
+*   Trying 0.0.0.0... connected
+> GET / HTTP/1.1
+> User-Agent: curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3
+> Host: 0.0.0.0:8080
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Date: Fri, 15 Nov 2013 23:14:14 GMT
+< Server: Apache/2.2.22 (Ubuntu)
+< Vary: Accept-Encoding
+< Content-Length: 1579
+< Content-Type: text/html;charset=UTF-8
+<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /</title>
+ </head>
+ <body>
+<h1>Index of /</h1>
+<table><tr><th><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr><tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/folder.gif" alt="[DIR]"></td><td><a href="GateOne/">GateOne/</a></td><td align="right">07-Nov-2013 22:41  </td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="VBoxGuestAdditions_4.2.12.iso">VBoxGuestAdditions_4.2.12.iso</a></td><td align="right">12-Apr-2013 10:17  </td><td align="right"> 57M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/folder.gif" alt="[DIR]"></td><td><a href="docker-mysql/">docker-mysql/</a></td><td align="right">06-Nov-2013 15:35  </td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="postinstall.sh">postinstall.sh</a></td><td align="right">14-Sep-2012 06:02  </td><td align="right">6.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="start-pph.sh">start-pph.sh</a></td><td align="right">06-Nov-2013 22:56  </td><td align="right">641 </td><td>&nbsp;</td></tr>
+<tr><th colspan="5"><hr></th></tr>
+</table>
+<address>Apache/2.2.22 (Ubuntu) Server at 0.0.0.0 Port 8080</address>
+</body></html>
+* Connection #0 to host 0.0.0.0 left intact
+* Closing connection #0
+{% endcodeblock %} 
+
+La idea de esto es que esta imagen llamada `marceloandrader/apache2` se la puede enviar a un sistema de producción
+y ejecutarla sin ningún cambio.

@@ -12,6 +12,8 @@ se hac&iacute;a en el servidor, ahora se lo puede hacer en el cliente (browser)
 y dejar al servidor solo como un API de acceso a la persistencia de 
 los datos.
 
+<!-- more -->
+
 Ejemplos de este tipo de aplicaciones web son: Gmail, Twitter, Facebook, etc.
 
 En estos escenarios librer&iacute;as como jQuery se queda corto
