@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | Marcelo Andrade]]></title>
   <link href="http://marceloandrader.github.com/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://marceloandrader.github.com/"/>
-  <updated>2013-11-15T18:16:39-05:00</updated>
+  <updated>2013-11-18T09:59:51-05:00</updated>
   <id>http://marceloandrader.github.com/</id>
   <author>
     <name><![CDATA[Marcelo Andrade]]></name>
@@ -138,7 +138,10 @@ se mantiene libre de dependencias de la misma aplicación, todo esto está dentr
 </span><span class='line'>&lt;p&gt;sudo docker commit gray_tiger marceloandrader/apache2
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Una vez hecho esto localmente tienes una imagen llamada <code>marceloandrader/apache2</code> que es
+<p>Justo antes de <code>docker commit</code> el sistema de archivos está en capas (layers) hay algunos
+archivos que se encuentran en la imagen y otros archivos que están en el contenedor,
+el momento que se hace commit estos archivos se guardan como otra imagen llamada
+<code>marceloandrader/apache2</code> que es
 apache2 dentro de un contenedor para ejecutarla y publicar algun sitio web:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
